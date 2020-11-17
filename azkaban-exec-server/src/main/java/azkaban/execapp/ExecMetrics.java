@@ -43,6 +43,9 @@ public class ExecMetrics {
   public static final String JOB_SUCCESS_METER_NAME = "job-success-meter";
   public static final String JOB_KILLED_METER_NAME = "job-killed-meter";
   public static final String POLLING_FREQUENCY_METER_NAME = "polling-frequency-meter";
+  public static final String JOBTYPE_SUCCESS_METER_SUFFIX = "-jobtype-success-meter";
+  public static final String JOBTYPE_FAIL_METER_SUFFIX = "-jobtype-fail-meter";
+  public static final String JOBTYPE_KILLED_METER_SUFFIX = "-jobtype-killed-meter";
 
   private final MetricsManager metricsManager;
   private final Timer flowSetupTimer;
@@ -158,6 +161,36 @@ public class ExecMetrics {
    */
   public void markOnePoll() {
     this.pollingFrequencyMeter.mark();
+  }
+
+  /**
+   * Record a successful jobtype execution event. Gets the meter with jobtype name
+   * or creates one if it doesn't exist and mark it
+   */
+  public void markJobTypeAsSuccess(String jobTypeName) {
+    String jobTypeSuccessMeterName = jobTypeName + JOBTYPE_SUCCESS_METER_SUFFIX;
+    Meter jobTypeSuccessMeter = this.metricsManager.addMeter(jobTypeSuccessMeterName);
+    jobTypeSuccessMeter.mark();
+  }
+
+  /**
+   * Record a failed jobtype execution event. Gets the meter with jobtype name
+   * or creates one if it doesn't exist and mark it
+   */
+  public void markJobTypeAsFailed(String jobTypeName) {
+    String jobTypeFailedMeterName = jobTypeName + JOBTYPE_FAIL_METER_SUFFIX;
+    Meter jobTypeFailedMeter = this.metricsManager.addMeter(jobTypeFailedMeterName);
+    jobTypeFailedMeter.mark();
+  }
+
+  /**
+   * Record a killed jobtype execution event. Gets the meter with jobtype name
+   * or creates one if it doesn't exist and mark it
+   */
+  public void markJobTypeAsKilled(String jobTypeName) {
+    String jobTypeKilledMeterName = jobTypeName + JOBTYPE_KILLED_METER_SUFFIX;
+    Meter jobTypeKilledMeter = this.metricsManager.addMeter(jobTypeKilledMeterName);
+    jobTypeKilledMeter.mark();
   }
 
 }

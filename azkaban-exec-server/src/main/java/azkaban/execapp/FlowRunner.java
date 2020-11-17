@@ -1677,12 +1677,15 @@ public class FlowRunner extends EventHandler<Event> implements Runnable {
       switch (status) {
         case SUCCEEDED:
           FlowRunner.this.execMetrics.markJobSuccess();
+          FlowRunner.this.execMetrics.markJobTypeAsSuccess(node.getType());
           break;
         case FAILED:
           FlowRunner.this.execMetrics.markJobFail();
+          FlowRunner.this.execMetrics.markJobTypeAsFailed(node.getType());
           break;
         case KILLED:
           FlowRunner.this.execMetrics.markJobKilled();
+          FlowRunner.this.execMetrics.markJobTypeAsKilled(node.getType());
           break;
         default:
           break;
